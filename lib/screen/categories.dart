@@ -5,16 +5,16 @@ import 'package:meal_app/data/dummy_data.dart';
 import 'package:meal_app/screen/meals.dart';
 import 'package:meal_app/widget/categories_grid_item.dart';
 
-
 //here we know need to manage any state so its stateless widget
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
 
   //in stateless widget the context is not globally avail. so thake it as parameter
   void _selectCategory(BuildContext context, Category category) {
-
-    //in dummyMeals check the categories and then whether it contains those meals or not 
-   final filteredMeals= dummyMeals.where((meal) => meal.categories.contains(category.id)).toList();   
+    //in dummyMeals check the categories and then whether it contains those meals or not
+    final filteredMeals = dummyMeals
+        .where((meal) => meal.categories.contains(category.id))
+        .toList();
 
     //push will pust the route on the stack of screen = navigation
 
@@ -24,7 +24,8 @@ class CategoriesScreen extends StatelessWidget {
 
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => MealsScreen(title: category.title, meals: filteredMeals),
+        builder: (ctx) =>
+            MealsScreen(title: category.title, meals: filteredMeals),
       ),
     );
   }
@@ -34,11 +35,9 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //return a widget
     //every multiScreen app uses a scaffold widget to build a base of the app with a widget
-    return Scaffold(
-      appBar: AppBar(title: Text('Choose Your Category')),
-
-      //to render Grid Elements on the screen
-      body: GridView(
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: GridView(
         //controls the UI of the grid on the screen
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, //set no. of column in particular screen
