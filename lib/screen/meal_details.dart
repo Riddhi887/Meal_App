@@ -2,21 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:meal_app/models/meal.dart';
 
 class MealDetailsScreen extends StatelessWidget {
-  const MealDetailsScreen({super.key, required this.meal});
+  const MealDetailsScreen({
+    super.key,
+    required this.meal,
+    required this.onToggleFavourite,
+  });
 
   final Meal meal;
+  final void Function(Meal meal) onToggleFavourite;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              onToggleFavourite(meal);    // we dont have direct access to the tabs so we created a function and passed it here ultimately
+            },
+            icon: Icon(Icons.star_border_outlined),
+          ),
+        ],
       ),
 
-    // you can use ListView for automatic scrolling
-    
-     body: SingleChildScrollView(
-       child: Column(
+      // you can use ListView for automatic scrolling
+      body: SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
@@ -37,12 +49,11 @@ class MealDetailsScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-         
             ),
-            const SizedBox( height: 18,),
+            const SizedBox(height: 18),
             for (final ingredient in meal.ingredients)
               Padding(
-                padding: const EdgeInsets.only(left: 18,  right: 18),
+                padding: const EdgeInsets.only(left: 18, right: 18),
                 child: Text(
                   ingredient,
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -52,9 +63,8 @@ class MealDetailsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-       
-              //steps
-            
+
+            //steps
             const SizedBox(height: 23),
             Padding(
               padding: const EdgeInsets.only(
@@ -83,9 +93,9 @@ class MealDetailsScreen extends StatelessWidget {
               ),
           ],
         ),
-     ),
- // accessiing the images
+      ),
 
+      // accessiing the images
     );
   }
 }
