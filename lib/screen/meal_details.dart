@@ -1,27 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/models/meal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meal_app/providers/favorites_provider.dart';
 
-class MealDetailsScreen extends StatelessWidget {
-  const MealDetailsScreen({
-    super.key,
-    required this.meal,
-    required this.onToggleFavourite,
-  });
+//as we use the riverpod package Riverpod package becomes ConsumerWidget
+
+class MealDetailsScreen extends ConsumerWidget {
+  const MealDetailsScreen({super.key, required this.meal});
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFavourite;
 
   @override
-  Widget build(BuildContext context) {
+  // to trigger the ref we use WidgetRef
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteMeals = ref.watch(favoriteMealsProvider);
+    final isFavorite = favoriteMeals.contains(meal);
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
           IconButton(
             onPressed: () {
-              onToggleFavourite(meal);    // we dont have direct access to the tabs so we created a function and passed it here ultimately
+              final wasAdded = ref
+                  .read(favoriteMealsProvider.notifier)
+                  .toggleMealFavouriteStatus(
+                    meal,
+                  ); // as we created notifier function we pass it here
+
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    wasAdded
+                        ? 'Meal added as Favorites.'
+                        : 'Meal removed from Favorites.',
+                  ),
+                ),
+              );
             },
-            icon: Icon(Icons.star_border_outlined),
+            icon: Icon(isFavorite ? Icons.star : Icons.star_border_outlined),
           ),
         ],
       ),

@@ -8,9 +8,8 @@ import 'package:meal_app/widget/categories_grid_item.dart';
 
 //here we know need to manage any state so its stateless widget
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key, required this.onToggleFavourite, required this.availableMeals});
+  const CategoriesScreen({super.key, required this.availableMeals});
 
-  final void Function(Meal meal) onToggleFavourite;
   final List<Meal> availableMeals;
 
   //in stateless widget the context is not globally avail. so thake it as parameter
@@ -31,8 +30,7 @@ class CategoriesScreen extends StatelessWidget {
         builder: (ctx) => MealsScreen(
           title: category.title,
           meals: filteredMeals,
-          onToggleFavourite:
-              onToggleFavourite, //passing the store value in onToggleFavourite
+          
         ),
       ),
     );
