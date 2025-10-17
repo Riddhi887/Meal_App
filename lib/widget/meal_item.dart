@@ -39,12 +39,17 @@ class MealItem extends StatelessWidget {
             // All widgets you want to stack above each other start from the one at the bottom
             // transparent_image package is used for a smooth transition between placeholder and final image
             // FadeInImage.memoryNetwork loads the image from network with a transparent placeholder
-            FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: meal.imageUrl, // fetching the url from meal model
-              fit: BoxFit.cover, // ensures the image fits nicely
-              height: 200,
-              width: double.infinity,
+
+            //hero : animates widget across different screens (starting point)
+            Hero(
+              tag: meal.id,
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: meal.imageUrl, // fetching the url from meal model
+                fit: BoxFit.cover, // ensures the image fits nicely
+                height: 200,
+                width: double.infinity,
+              ),
             ),
 
             // Positioned widget places a widget on top of another widget

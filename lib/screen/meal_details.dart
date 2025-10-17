@@ -16,7 +16,6 @@ class MealDetailsScreen extends ConsumerWidget {
     final favoriteMeals = ref.watch(favoriteMealsProvider);
     final isFavorite = favoriteMeals.contains(meal);
 
-
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
@@ -40,7 +39,21 @@ class MealDetailsScreen extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(isFavorite ? Icons.star : Icons.star_border_outlined),
+
+            //Implicit animation
+            icon: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return RotationTransition(
+                turns: Tween<double>(begin: 0.9, end: 1.0).animate(animation),
+                child: child, 
+                );
+            },
+            child: Icon(
+              isFavorite ? Icons.star : Icons.star_border_outlined, 
+              key: ValueKey(isFavorite),  // key: tells animatedSwitcher if there is changed in widget or not 
+            ),
+            ),
           ),
         ],
       ),
@@ -50,11 +63,16 @@ class MealDetailsScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              meal.imageUrl,
-              height: 300,
-              width: double.infinity,
-              fit: BoxFit.cover,
+
+            //hero: for multiscreen widget transition
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 23),
             Padding(
